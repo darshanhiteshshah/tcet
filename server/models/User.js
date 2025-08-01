@@ -5,16 +5,19 @@ const userSchema = mongoose.Schema({
     name: { type: String, required: true },
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true },
+    walletBalance: {
+        type: Number,
+        required: true,
+        default: 5000 // Each new user starts with ₹5000
+    }
 }, {
     timestamps: true
 });
 
-// Method to compare entered password with the hashed password in the database
 userSchema.methods.matchPassword = async function(enteredPassword) {
     return await bcrypt.compare(enteredPassword, this.password);
 };
 
-// Middleware to hash the password before saving a new user
 userSchema.pre('save', async function(next) {
     if (!this.isModified('password')) {
         next();

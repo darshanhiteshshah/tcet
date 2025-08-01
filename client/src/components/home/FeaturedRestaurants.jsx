@@ -1,49 +1,85 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { motion } from 'framer-motion';
+import { ArrowRight, Star } from 'lucide-react';
+
+// Using your data import path as requested
 import { mockRestaurantsData } from '../../data/restaurants';
-import { ArrowRight } from 'lucide-react';
 
 const FeaturedRestaurants = () => {
     const featured = mockRestaurantsData.slice(0, 3);
 
+    const containerVariants = {
+        hidden: {},
+        visible: {
+            transition: {
+                staggerChildren: 0.2,
+            },
+        },
+    };
+
+    const cardVariants = {
+        hidden: { opacity: 0, y: 50 },
+        visible: {
+            opacity: 1,
+            y: 0,
+            transition: {
+                duration: 0.6,
+                ease: 'easeOut',
+            },
+        },
+    };
+
     return (
-        <div className="bg-[#fffefb] text-[#2e2e2e] py-20">
+        <div className="bg-orange-50/50 text-zinc-800 py-24 sm:py-32">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div className="text-center mb-12">
-                    <h2 className="text-4xl font-extrabold tracking-tight sm:text-5xl text-[#FC8019]">
+                <div className="text-center mb-16">
+                    <h2 className="text-4xl font-extrabold tracking-tight sm:text-5xl text-orange-600">
                         Featured Restaurants
                     </h2>
-                    <p className="mt-4 max-w-2xl mx-auto text-xl text-[#5c5c5c]">
-                        Handpicked for an unforgettable dining experience.
+                    <p className="mt-4 max-w-2xl mx-auto text-lg text-zinc-600">
+                        Handpicked by our team for an unforgettable dining experience.
                     </p>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <motion.div 
+                    className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
+                    variants={containerVariants}
+                    initial="hidden"
+                    whileInView="visible"
+                    viewport={{ once: true, amount: 0.3 }}
+                >
                     {featured.map((restaurant) => (
-                        <Link
-                            to={`/restaurants/${restaurant.id}`}
-                            key={restaurant.id}
-                            className="group relative block overflow-hidden rounded-2xl shadow-lg hover:shadow-xl transition-shadow duration-300"
-                        >
-                            <div className="relative h-96 w-full transition-transform duration-500 ease-in-out group-hover:scale-[1.02]">
-                                <img
-                                    src={restaurant.imageUrl}
-                                    alt={restaurant.name}
-                                    className="h-full w-full object-cover object-center transform transition-transform duration-700 ease-in-out group-hover:scale-110"
-                                />
-                                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/30 to-transparent transition-opacity duration-500 group-hover:opacity-90" />
-                            </div>
-
-                            <div className="absolute bottom-0 left-0 right-0 p-5 text-white">
-                                <h3 className="text-2xl font-bold">{restaurant.name}</h3>
-                                <div className="mt-2 flex items-center justify-between">
-                                    <span className="text-[#FC8019] font-semibold">View Menu</span>
-                                    <ArrowRight className="text-[#FC8019] transform transition-transform duration-300 group-hover:translate-x-1" />
+                        <motion.div key={restaurant.id} variants={cardVariants}>
+                            <Link
+                                to={`/restaurants/${restaurant.id}`}
+                                className="group block bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 overflow-hidden h-full"
+                            >
+                                <div className="overflow-hidden h-64">
+                                    <img
+                                        src={restaurant.imageUrl}
+                                        alt={restaurant.name}
+                                        className="h-full w-full object-cover object-center transform transition-transform duration-500 ease-in-out group-hover:scale-110"
+                                    />
                                 </div>
-                            </div>
-                        </Link>
+                                <div className="p-6 flex flex-col">
+                                    <div className="flex justify-between items-start">
+                                        <h3 className="text-xl font-bold text-zinc-900">{restaurant.name}</h3>
+                                        <div className="flex items-center gap-1 bg-green-100 text-green-800 font-bold text-sm px-2 py-1 rounded-full">
+                                            <Star size={14} fill="currentColor" />
+                                            <span>{restaurant.rating}</span>
+                                        </div>
+                                    </div>
+                                    <p className="text-sm text-zinc-500 mt-1">{restaurant.cuisine}</p>
+                                    <div className="mt-6 pt-4 border-t border-dashed border-zinc-200 flex items-center justify-between text-orange-600 font-semibold">
+                                        <span>View Details</span>
+                                        <ArrowRight className="transform transition-transform duration-300 group-hover:translate-x-1" />
+                                    </div>
+                                </div>
+                            </Link>
+                        </motion.div>
                     ))}
-                </div>
+                </motion.div>
             </div>
         </div>
     );

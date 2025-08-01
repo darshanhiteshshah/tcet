@@ -6,8 +6,7 @@ const registerUser = async (req, res) => {
     const userExists = await User.findOne({ email });
 
     if (userExists) {
-        res.status(400).json({ message: 'User already exists' });
-        return;
+        return res.status(400).json({ message: 'User already exists' });
     }
 
     const user = await User.create({ name, email, password });
@@ -17,6 +16,7 @@ const registerUser = async (req, res) => {
             _id: user._id,
             name: user.name,
             email: user.email,
+            walletBalance: user.walletBalance,
             token: generateToken(user._id),
         });
     } else {
@@ -33,6 +33,7 @@ const authUser = async (req, res) => {
             _id: user._id,
             name: user.name,
             email: user.email,
+            walletBalance: user.walletBalance,
             token: generateToken(user._id),
         });
     } else {

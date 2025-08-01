@@ -1,10 +1,13 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import useAuth from "../hooks/useAuth";
+import { useAuth } from '../context/AuthContext'; // Correct path to your context file
 import { loginUser } from "../services/authService";
+import { motion } from "framer-motion";
+import { Mail, Lock, AlertCircle } from "lucide-react";
+
 
 const LoginPage = () => {
-    const { setUser } = useAuth();
+    const { login } = useAuth(); // Changed from setUser to login
     const navigate = useNavigate();
     const [formData, setFormData] = useState({ email: "", password: "" });
     const [error, setError] = useState("");
@@ -19,36 +22,88 @@ const LoginPage = () => {
         setLoading(true);
         setError("");
         try {
-            const res = await loginUser(formData);
-            setUser(res.data);
-            navigate("/");
+            const res = await loginUser(formData); // or registerUser
+    login(res.data); // Use the login function from the context
+    navigate("/");
         } catch (err) {
-            setError(err.response?.data?.message || "Login failed.");
+            setError(err.response?.data?.message || "Login failed. Please check your credentials.");
         } finally {
             setLoading(false);
         }
     };
 
     return (
-        <div className="flex items-center justify-center min-h-screen bg-zinc-50 pt-24 px-4">
-            <form onSubmit={handleSubmit} className="bg-white p-8 rounded-xl shadow-lg w-full max-w-md space-y-6">
-                <h1 className="text-3xl font-extrabold text-zinc-900 text-center">Login</h1>
-                <div>
-                    <label className="block mb-2 text-zinc-700 font-semibold">Email</label>
-                    <input type="email" name="email" value={formData.email} onChange={handleChange} required className="w-full bg-zinc-100 text-zinc-900 border border-zinc-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-orange-500" />
+        <div 
+            className="relative min-h-screen w-full flex items-center justify-center py-12 px-4 bg-cover bg-center"
+            style={{ backgroundImage: "url('https://images.unsplash.com/photo-1504674900247-0877df9cc836?q=80&w=2070&auto=format&fit=crop')" }}
+        >
+            {/* --- Background Overlay --- */}
+            <div className="absolute inset-0 bg-black/60 backdrop-blur-sm"></div>
+
+            {/* --- Form Card --- */}
+            <motion.div 
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.4, ease: "easeOut" }}
+                className="relative w-full max-w-md bg-gray-900/60 p-8 rounded-2xl shadow-2xl border border-white/10"
+            >
+                <div className="text-center">
+                    <h2 className="text-3xl font-extrabold text-white tracking-tight">
+                        Welcome Back
+                    </h2>
+                    <p className="mt-2 text-gray-300">
+                        Sign in to access your account.
+                    </p>
                 </div>
-                <div>
-                    <label className="block mb-2 text-zinc-700 font-semibold">Password</label>
-                    <input type="password" name="password" value={formData.password} onChange={handleChange} required className="w-full bg-zinc-100 text-zinc-900 border border-zinc-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-orange-500" />
-                </div>
-                {error && <p className="text-red-500 text-sm text-center">{error}</p>}
-                <button type="submit" disabled={loading} className="w-full bg-orange-500 hover:bg-orange-600 text-white font-bold py-3 rounded-lg transition-all duration-300 disabled:bg-orange-300">
-                    {loading ? "Logging in..." : "Login"}
-                </button>
-                <p className="text-center text-zinc-600">
-                    No account? <Link to="/register" className="font-semibold text-orange-600 hover:underline">Register</Link>
-                </p>
-            </form>
+                
+                <form onSubmit={handleSubmit} className="mt-8 space-y-6">
+                    {error && (
+                        <div className="p-3 bg-red-500/10 border border-red-500/20 text-red-300 rounded-lg text-sm flex items-center gap-2">
+                            <AlertCircle className="w-5 h-5 flex-shrink-0" />
+                            <span>{error}</span>
+                        </div>
+                    )}
+                    
+                    <div className="relative">
+                        <Mail className="absolute left-3.5 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+                        <input 
+                            type="email" 
+                            name="email" 
+                            value={formData.email} 
+                            onChange={handleChange} 
+                            required 
+                            placeholder="Email address"
+                            className="w-full bg-gray-800/50 border border-gray-700 rounded-lg pl-11 pr-4 py-3 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent transition" 
+                        />
+                    </div>
+                    <div className="relative">
+                        <Lock className="absolute left-3.5 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+                        <input 
+                            type="password" 
+                            name="password" 
+                            value={formData.password} 
+                            onChange={handleChange} 
+                            required 
+                            placeholder="Password"
+                            className="w-full bg-gray-800/50 border border-gray-700 rounded-lg pl-11 pr-4 py-3 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent transition" 
+                        />
+                    </div>
+                    
+                    <button 
+                        type="submit" 
+                        disabled={loading} 
+                        className="w-full font-bold py-3 px-4 rounded-lg text-white bg-orange-500 hover:bg-orange-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-900 focus:ring-orange-500 transition-all duration-300 disabled:bg-orange-400/50 disabled:cursor-not-allowed"
+                    >
+                        {loading ? "Signing In..." : "Sign In"}
+                    </button>
+
+                    <p className="text-center text-sm text-gray-300">
+                        No account yet? <Link to="/register" className="font-semibold text-orange-400 hover:text-orange-300 hover:underline">
+                            Register now
+                        </Link>
+                    </p>
+                </form>
+            </motion.div>
         </div>
     );
 };
