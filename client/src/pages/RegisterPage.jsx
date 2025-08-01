@@ -6,7 +6,7 @@ import { motion } from "framer-motion";
 import { User, Mail, Lock, AlertCircle } from "lucide-react";
 
 const RegisterPage = () => {
-    const { login } = useAuth(); // Changed from setUser to login
+    const { login } = useAuth(); // Use the login function from context
     const navigate = useNavigate();
     const [formData, setFormData] = useState({ name: "", email: "", password: "" });
     const [error, setError] = useState("");
@@ -21,9 +21,10 @@ const RegisterPage = () => {
         setLoading(true);
         setError("");
         try {
-            const res = await loginUser(formData); // or registerUser
-    login(res.data); // Use the login function from the context
-    navigate("/");
+            // CORRECTED: Changed loginUser to registerUser
+            const res = await registerUser(formData); 
+            login(res.data); // Log the user in immediately after registration
+            navigate("/");
         } catch (err) {
             setError(err.response?.data?.message || "Registration failed. Please try again.");
         } finally {
