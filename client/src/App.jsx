@@ -1,16 +1,25 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import React from 'react';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import Navbar from './components/layout/Navbar';
+import Footer from './components/layout/Footer';
+import HomePage from './pages/HomePage';
+import RestaurantsPage from './pages/RestaurantsPage';
+import RestaurantMenuPage from './pages/RestaurantMenuPage';
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
-    <>
-      <h1>TCET 1</h1>
-    </>
-  )
+    <Router>
+      <Navbar />
+      <main>
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/restaurants" element={<RestaurantsPage />} />
+          <Route path="/restaurants/:id" element={<RestaurantMenuPage />} />
+        </Routes>
+      </main>
+      <Footer />
+    </Router>
+  );
 }
 
-export default App
+export default App;
