@@ -1,14 +1,15 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import useAuth from '../../hooks/useAuth.js';
+import useAuth from '../../hooks/useAuth';
+
 
 const Navbar = () => {
-    const { user, setUser } = useAuth();
+    const { user, logout } = useAuth();
     const navigate = useNavigate();
 
     const handleLogout = () => {
-        setUser(null); // This will also clear localStorage via the context's useEffect
-        navigate('/login'); 
+        logout();
+        navigate('/');
     };
 
     return (
@@ -17,6 +18,12 @@ const Navbar = () => {
                 <div className="text-3xl font-extrabold text-orange-600">
                     <Link to="/">Feast.</Link>
                 </div>
+                <div className="hidden md:flex items-center gap-8 font-semibold text-zinc-700">
+                    <Link to="/restaurants" className="hover:text-orange-600 transition-colors">Restaurants</Link>
+                    <a href="#offers" className="hover:text-orange-600 transition-colors">Offers</a>
+                    <a href="#contact" className="hover:text-orange-600 transition-colors">Contact</a>
+                </div>
+                
                 {user ? (
                     <div className="flex items-center gap-4">
                         <span className="font-semibold text-zinc-800">Hello, {user.name}</span>
@@ -25,14 +32,11 @@ const Navbar = () => {
                         </button>
                     </div>
                 ) : (
-                    <div className="flex items-center gap-4">
-                        <Link to="/login" className="font-semibold text-zinc-700 hover:text-orange-600">Login</Link>
-                        <Link to="/register">
-                            <button className="px-4 py-2 bg-orange-500 text-white rounded-lg font-semibold hover:bg-orange-600 transition-colors">
-                                Sign Up
-                            </button>
-                        </Link>
-                    </div>
+                    <Link to="/login">
+                        <button className="px-4 py-2 bg-orange-500 text-white rounded-lg font-semibold hover:bg-orange-600 transition-colors">
+                            Sign In
+                        </button>
+                    </Link>
                 )}
             </nav>
         </header>
