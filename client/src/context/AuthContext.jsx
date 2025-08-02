@@ -7,6 +7,7 @@ const AuthContext = createContext();
 
 // 2. Create the Provider component
 export const AuthProvider = ({ children }) => {
+    // State to hold the current user information
     const [user, setUser] = useState(null);
 
     // On initial app load, check localStorage for existing user data
@@ -14,11 +15,12 @@ export const AuthProvider = ({ children }) => {
         try {
             const userInfoFromStorage = localStorage.getItem('userInfo');
             if (userInfoFromStorage) {
+                // Safely parse the user data from localStorage
                 setUser(JSON.parse(userInfoFromStorage));
             }
         } catch (error) {
             console.error("Failed to parse user info from localStorage", error);
-            // If parsing fails, clear the corrupted data
+            // If parsing fails (e.g., corrupted data), clear the corrupted data
             localStorage.removeItem('userInfo');
         }
     }, []);
@@ -41,8 +43,10 @@ export const AuthProvider = ({ children }) => {
     const updateWalletBalance = (newBalance) => {
         // Only proceed if a user is logged in
         if (user) {
+            // Create a new user object with the updated balance
             const updatedUser = { ...user, walletBalance: newBalance };
             setUser(updatedUser);
+            // Also update the data in localStorage
             localStorage.setItem('userInfo', JSON.stringify(updatedUser));
         }
     };
