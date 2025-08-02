@@ -1,34 +1,33 @@
 import Order from '../models/Order.js';
 import User from '../models/User.js';
-import Restaurant from '../models/Restaurant.js'; // Import Restaurant model
 
 const addOrderItems = async (req, res) => {
-    const { orderItems, totalPrice, restaurantId } = req.body; // Expect restaurantId from frontend
+    const { orderItems, totalPrice } = req.body;
 
     if (!orderItems || orderItems.length === 0) {
         return res.status(400).json({ message: 'No order items' });
     }
 
+    // The user is attached to req by the 'protect' middleware
     const user = await User.findById(req.user._id);
-    const restaurant = await Restaurant.findOne({ id: restaurantId });
 
-    if (!user || !restaurant) {
-        return res.status(404).json({ message: 'User or Restaurant not found' });
+    if (!user) {
+        return res.status(404).json({ message: 'User not found' });
     }
 
+    // Check for sufficient funds
     if (user.walletBalance < totalPrice) {
         return res.status(400).json({ message: 'Insufficient wallet balance' });
     }
 
+    // Deduct from wallet
     user.walletBalance -= totalPrice;
     await user.save();
 
     const order = new Order({
-        orderItems: orderItems.map(item => ({...item, dishId: item.id, _id: undefined })),
+        orderItems: orderItems.map(item => ({...item, dish: item.id, _id: undefined })),
         user: req.user._id,
         totalPrice,
-        deliveryAddress: user.address,
-        restaurantLocation: restaurant.location,
         isPaid: true,
         paidAt: Date.now(),
         status: 'Confirmed',
@@ -36,15 +35,16 @@ const addOrderItems = async (req, res) => {
 
     const createdOrder = await order.save();
     
+    // Send back the created order and the updated wallet balance
     res.status(201).json({
         ...createdOrder._doc,
         updatedWalletBalance: user.walletBalance
     });
 };
 
-// ... (getOrderById remains the same)
 const getOrderById = async (req, res) => {
     const order = await Order.findById(req.params.id).populate('user', 'name email');
+
     if (order) {
         if (order.user._id.toString() !== req.user._id.toString()) {
             return res.status(401).json({ message: 'Not authorized' });
