@@ -45,5 +45,16 @@ export const logout = () => {
 
 // Get current user from local storage
 export const getCurrentUser = () => {
-    return JSON.parse(localStorage.getItem('user'));
+    // Correctly handle cases where the 'user' item does not exist or is not valid JSON.
+    const user = localStorage.getItem('user');
+    if (user && user !== 'undefined') {
+        try {
+            return JSON.parse(user);
+        } catch (e) {
+            console.error("Failed to parse user info from localStorage", e);
+            localStorage.removeItem('user'); // Clear corrupted data
+            return null;
+        }
+    }
+    return null;
 };
