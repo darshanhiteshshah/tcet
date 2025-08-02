@@ -5,6 +5,9 @@ export const mockRestaurantsData = [
         rating: 4.7,
         imageUrl: 'https://images.unsplash.com/photo-1555939594-58d7cb561ad1?q=80&w=800&auto=format&fit=crop',
         description: 'A celebrated spot for authentic Gujarati snacks and classic Mumbai street food.',
+        cuisine: 'Street Food',
+        priceLevel: 2, // 1 for $, 2 for $$, 3 for $$$
+        avgDeliveryTime: 25, // in minutes
         dishes: [
             { id: 'p1', name: 'Pani Puri', description: 'Crispy shells filled with spiced potatoes, chickpeas, and tangy tamarind water.', price: 150, imageUrl: 'https://images.pexels.com/photos/12318206/pexels-photo-12318206.jpeg' },
             { id: 'p2', name: 'Pav Bhaji', description: 'A flavorful mash of mixed vegetables served with soft, buttered bread rolls.', price: 250, imageUrl: 'https://images.unsplash.com/photo-1626132647523-66f5bf380027?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8cGF2JTIwYmhhaml8ZW58MHx8MHx8fDA%3D' },
@@ -18,6 +21,9 @@ export const mockRestaurantsData = [
         id: '2',
         name: 'Saravana Bhavan',
         rating: 4.6,
+        cuisine: 'South Indian',
+        priceLevel: 2,
+        avgDeliveryTime: 30,
         imageUrl: 'https://media.istockphoto.com/id/915770510/photo/top-view-of-delicious-masala-dosa-paper-roast-or-ghee-roast-popular-in-south-indian-cuisine.jpg?s=1024x1024&w=is&k=20&c=SSdCC7OgIjc2JCZXFT_Xy_iJhgQDJuX7IjbeCwhHAuQ=',
         description: 'A renowned destination for authentic South Indian vegetarian cuisine, famous for its crispy dosas.',
         dishes: [
@@ -33,6 +39,9 @@ export const mockRestaurantsData = [
         id: '3',
         name: 'Rajdhani Thali',
         rating: 4.8,
+        cuisine: 'Thali',
+        priceLevel: 3,
+        avgDeliveryTime: 40,
         imageUrl: 'https://media.istockphoto.com/id/1168396740/photo/traditional-food-thali-from-gujarat-india.jpg?s=1024x1024&w=is&k=20&c=ltWliIeILx4I446vbXzNTNmbNP_IA6_xGgJWZgM3_wo=',
         description: 'Specializing in lavish Rajasthani and Gujarati thalis, offering an unlimited feast of traditional dishes.',
         dishes: [
@@ -48,6 +57,9 @@ export const mockRestaurantsData = [
         id: '4',
         name: 'Burma Burma',
         rating: 4.9,
+        cuisine: 'Burmese',
+        priceLevel: 3,
+        avgDeliveryTime: 35,
         imageUrl: 'data:image/jpeg;base64,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',
         description: 'An innovative restaurant offering a unique taste of vegetarian Burmese cuisine, from salads to noodle bowls.',
         dishes: [
@@ -62,6 +74,9 @@ export const mockRestaurantsData = [
     {
         id: '5',
         name: 'Ishaara',
+        cuisine: 'North Indian',
+        priceLevel: 1,
+        avgDeliveryTime: 20,
         rating: 4.5,
         imageUrl: 'https://media.istockphoto.com/id/683031210/photo/glasses-and-plates-on-table-in-restaurant.webp?a=1&b=1&s=612x612&w=0&k=20&c=STQi6mVeDxnmfR1Ejf5IFX8f7asJ4uGX7oiecbsZP_s=',
         description: 'A modern Indian restaurant serving contemporary dishes, from succulent kebabs to rich, slow-cooked dals.',
@@ -77,7 +92,10 @@ export const mockRestaurantsData = [
     {
         id: '6',
         name: 'Masala Library',
+        cuisine: 'Modern Indian',
         rating: 4.8,
+        priceLevel: 3,
+        avgDeliveryTime: 30,
         imageUrl: 'https://media.istockphoto.com/id/465629937/photo/shop-of-exotic-indian-spices.webp?a=1&b=1&s=612x612&w=0&k=20&c=btoqztHXLeu0gpDolKwtYUyHfKeB7iT8v5Jls-vnlzI=',
         description: 'A pioneer of modern Indian cuisine, deconstructing classic dishes with scientific techniques.',
         dishes: [
@@ -92,6 +110,9 @@ export const mockRestaurantsData = [
     {
         id: '7',
         name: 'Punjab Grill',
+        cuisine: 'North Indian',
+        priceLevel: 2,
+        avgDeliveryTime: 25,
         rating: 4.6,
         imageUrl: 'https://media.istockphoto.com/id/1365548297/photo/spicy-indian-chicken-tikka-masala-served-at-an-expensive-fine-dining-restaurant.webp?a=1&b=1&s=612x612&w=0&k=20&c=lJGnsgO0awAFYxuEZoWvrxcNVRcsctmFlohSyRaNHKs=',
         description: 'Celebrating North Indian culinary heritage with robust flavors, specializing in tandoori delicacies.',
@@ -107,7 +128,10 @@ export const mockRestaurantsData = [
     {
         id: '8',
         name: 'Mainland China',
+        cuisine: 'Chinese',
         rating: 4.5,
+        priceLevel: 2,
+        avgDeliveryTime: 30,
         imageUrl: 'https://images.unsplash.com/photo-1754008238898-e54a875f6683?w=700&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8TWFpbmxhbmQlMjBDaGluYSUyME1haW5sYW5kJTIwQ2hpbmElMjByZXN0cmF1bnR8ZW58MHx8Mnx8fDA%3D',
         description: 'A premier destination for authentic Chinese cuisine, from spicy Sichuan flavors to classic Hakka noodles.',
         dishes: [
@@ -122,6 +146,9 @@ export const mockRestaurantsData = [
     {
         id: '9',
         name: 'Pizza By The Bay',
+        cuisine: 'Italian',
+        priceLevel: 2,
+        avgDeliveryTime: 25,
         rating: 4.4,
         imageUrl: 'https://images.unsplash.com/photo-1513104890138-7c749659a591?q=80&w=800&auto=format&fit=crop',
         description: 'An iconic eatery offering classic and fusion pizzas, complemented by stunning views of the bay.',
@@ -137,6 +164,9 @@ export const mockRestaurantsData = [
     {
         id: '10',
         name: 'Elco Pani Puri Centre',
+        cuisine: 'Street Food',
+        priceLevel: 1,
+        avgDeliveryTime: 15,
         rating: 4.6,
         imageUrl: 'https://media.istockphoto.com/id/979115746/photo/pani-puri-or-golgappa-is-a-popular-indian-chat-menu-selective-focus.jpg?s=612x612&w=0&k=20&c=YIYj2KHwYIRXtKg2vMGP0RTlnyEwi5Xp_lPh9XPNItw=',
         description: "A legendary destination for Mumbai's best street food, famous for its delicious Pani Puri and chaat.",
@@ -152,6 +182,9 @@ export const mockRestaurantsData = [
     {
         id: '11',
         name: 'Kyani & Co.',
+        cuisine: 'Irani Café',
+        priceLevel: 1,
+        avgDeliveryTime: 20,
         rating: 4.2,
         imageUrl: 'https://media.istockphoto.com/id/1494349673/photo/dark-stout-beer-in-glass-at-the-brewery.webp?a=1&b=1&s=612x612&w=0&k=20&c=cpIh5f78V0F95fNftFjxCUQcM9C_DdRLziasKVF34bI=',
         description: 'A heritage Irani café steeped in history, serving iconic Parsi snacks, baked goods, and bun maska.',
@@ -167,6 +200,9 @@ export const mockRestaurantsData = [
     {
         id: '12',
         name: 'Dakshinayan',
+        cuisine: 'South Indian',
+        priceLevel: 1,
+        avgDeliveryTime: 30,
         rating: 4.7,
         imageUrl: 'https://media.istockphoto.com/id/177447843/photo/house-boat-in-backwaters.jpg?s=612x612&w=0&k=20&c=9RnNr22SKJiNKuOukgfo82TtSgvSLMIZALXNf4m_VPM=',
         description: 'An authentic South Indian eatery celebrated for its traditional flavors, dosas, and regional specialties.',
