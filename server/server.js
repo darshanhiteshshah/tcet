@@ -10,8 +10,6 @@ import authRoutes from './routes/authRoutes.js';
 import orderRoutes from './routes/orderRoutes.js';
 
 // Load environment variables from the .env file.
-// This is essential for local development. Render will handle these variables
-// automatically in the production environment.
 dotenv.config();
 
 // Connect to the database.
@@ -24,11 +22,23 @@ const app = express();
 // 1. CORS (Cross-Origin Resource Sharing) Middleware
 // This is a crucial security feature that allows your frontend domain
 // to make API calls to this backend.
-// We use the CLIENT_ORIGIN environment variable to restrict access
-// to your deployed frontend URL. For local dev, this will be http://localhost:3000.
-// A wildcard '*' is not recommended for production.
+// We use a conditional check to allow multiple origins depending on the environment.
+const allowedOrigins = [
+  process.env.CLIENT_ORIGIN, // The URL of your deployed frontend on Render
+  'http://localhost:5173',   // The URL for your local development server
+];
+
 const corsOptions = {
-  origin: process.env.CLIENT_ORIGIN,
+  origin: (origin, callback) => {
+    // Allow requests with no origin (like mobile apps or curl)
+    if (!origin) return callback(null, true);
+    // If the origin is in our allowed list, allow it
+    if (allowedOrigins.indexOf(origin) !== -1) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
   credentials: true, // Allow cookies and authentication headers
 };
 app.use(cors(corsOptions));
