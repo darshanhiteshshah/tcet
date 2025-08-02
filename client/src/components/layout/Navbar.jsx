@@ -1,11 +1,12 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { NavLink, Link, useNavigate } from 'react-router-dom';
-import  useAuth  from '../../hooks/useAuth';
+import useAuth from '../../hooks/useAuth';
 import { useCart } from '../../context/CartContext';
-import { ShoppingCart, Wallet, User as UserIcon, LogOut, Menu, X, Home, BookOpen, Settings, Sparkles } from 'lucide-react';
+import { ShoppingCart, Wallet, User as UserIcon, LogOut, Menu, X, Home, BookOpen, Sparkles, PlusCircle } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
-// --- Logo component for "Where's My Tiffin" ---
+// --- Logo component for "Where's My Tiffin" (No changes) ---
 const Logo = () => (
     <Link to="/" className="flex items-center gap-3">
         {/* Tiffin-style SVG Icon */}
@@ -35,6 +36,7 @@ const Navbar = () => {
     const handleLogout = () => {
         logout();
         setProfileOpen(false);
+        setMobileMenuOpen(false);
         navigate('/');
     };
 
@@ -51,10 +53,10 @@ const Navbar = () => {
 
     const navLinkClass = ({ isActive }) => 
         `flex items-center gap-2 px-3 py-2 rounded-md transition-colors duration-200 ${
-            isActive ? 'bg-orange-50 text-orange-600 font-semibold' : 'text-zinc-600 hover:bg-zinc-100 hover:text-zinc-900'
+            isActive ? 'bg-orange-100 text-orange-600 font-semibold' : 'text-zinc-600 hover:bg-zinc-100 hover:text-zinc-900'
         }`;
 
-    const dropdownItemClass = "w-full flex items-center gap-3 text-left px-3 py-2 text-sm text-zinc-700 font-medium rounded-md hover:bg-zinc-100 transition-colors";
+    const dropdownItemClass = "w-full flex items-center gap-3 text-left px-4 py-2.5 text-sm text-zinc-700 font-medium rounded-md hover:bg-zinc-100 transition-colors";
 
     return (
         <header className="fixed top-0 left-0 w-full z-50 bg-white/80 backdrop-blur-lg border-b border-zinc-200/80">
@@ -62,14 +64,13 @@ const Navbar = () => {
                 <Logo />
 
                 {/* --- Desktop Navigation --- */}
-                <div className="hidden md:flex items-center gap-2 bg-zinc-100/80 p-1 rounded-full">
+                <div className="hidden md:flex items-center gap-1 bg-zinc-100/80 p-1 rounded-full border border-zinc-200/90">
                     <NavLink to="/" className={navLinkClass} end>
                         <Home size={18} /> Home
                     </NavLink>
                     <NavLink to="/restaurants" className={navLinkClass}>
                         <BookOpen size={18} /> Restaurants
                     </NavLink>
-                    {/* --- NEW LINK ADDED HERE --- */}
                     <NavLink to="/ai-chef" className={navLinkClass}>
                         <Sparkles size={18} /> AI Chef
                     </NavLink>
@@ -101,30 +102,40 @@ const Navbar = () => {
                                         animate={{ opacity: 1, scale: 1, y: 0 }}
                                         exit={{ opacity: 0, scale: 0.95, y: -10 }}
                                         transition={{ duration: 0.15, ease: 'easeOut' }}
-                                        className="absolute right-0 mt-2 w-72 bg-white rounded-xl shadow-2xl border border-zinc-100 p-2 origin-top-right"
+                                        className="absolute right-0 mt-3 w-80 bg-white rounded-2xl shadow-2xl border border-zinc-100 p-3 origin-top-right flex flex-col gap-3"
                                     >
-                                        <div className="border-b border-zinc-200 p-2 mb-2">
-                                            <p className="font-bold text-zinc-800 text-lg">{user.name}</p>
-                                            <p className="text-sm text-zinc-500">{user.email}</p>
-                                        </div>
-                                        <div className="space-y-1 p-1">
-                                            <NavLink to="/orders" onClick={() => setProfileOpen(false)} className={dropdownItemClass}><BookOpen size={16} /> My Tiffins</NavLink>
-                                            <NavLink to="/profile" onClick={() => setProfileOpen(false)} className={dropdownItemClass}><UserIcon size={16} /> Profile</NavLink>
-                                            <NavLink to="/settings" onClick={() => setProfileOpen(false)} className={dropdownItemClass}><Settings size={16} /> Settings</NavLink>
-                                        </div>
-                                        <div className="p-2">
-                                            <div className="flex items-center justify-between bg-gradient-to-r from-green-100 to-emerald-100 text-green-800 p-3 rounded-lg">
-                                                <span className="font-semibold text-sm">Wallet</span>
-                                                <div className="flex items-center gap-1 font-bold text-lg">
-                                                    <Wallet size={18} />
-                                                    <span>₹{user.walletBalance?.toFixed(2) || '0.00'}</span>
-                                                </div>
+                                        {/* --- User Card Header --- */}
+                                        <div className="flex items-center gap-4 p-2">
+                                            <div className="w-14 h-14 bg-orange-500 rounded-full flex items-center justify-center text-white font-bold text-2xl shadow-md">
+                                                {user.name.charAt(0).toUpperCase()}
+                                            </div>
+                                            <div className="flex-1">
+                                                <p className="font-bold text-zinc-800 text-lg truncate">{user.name}</p>
+                                                <p className="text-sm text-zinc-500 truncate">{user.email}</p>
                                             </div>
                                         </div>
-                                        <button onClick={handleLogout} className={`${dropdownItemClass} text-red-600 m-1`}>
-                                            <LogOut size={16} />
-                                            Logout
-                                        </button>
+
+                                        {/* --- Wallet Balance --- */}
+                                        <div className="bg-gradient-to-br from-zinc-800 to-black text-white p-4 rounded-xl flex flex-col gap-2 shadow-lg">
+                                            <div className="flex justify-between items-center text-zinc-300 text-sm">
+                                                <span>Available Balance</span>
+                                                <Wallet size={16} />
+                                            </div>
+                                            <div className="flex justify-between items-end">
+                                               <span className="text-3xl font-bold">₹{user.walletBalance?.toFixed(2) || '0.00'}</span>
+                                               <button className="flex items-center gap-1.5 text-sm font-semibold bg-white/10 px-3 py-1 rounded-full hover:bg-white/20 transition-colors">
+                                                    <PlusCircle size={14} /> Add Money
+                                               </button>
+                                            </div>
+                                        </div>
+
+                                        {/* --- Logout Button --- */}
+                                        <div className="border-t border-zinc-200 mt-1 pt-2">
+                                            <button onClick={handleLogout} className={`${dropdownItemClass} text-red-600 hover:bg-red-50`}>
+                                                <LogOut size={16} />
+                                                <span>Logout</span>
+                                            </button>
+                                        </div>
                                     </motion.div>
                                 )}
                             </AnimatePresence>
@@ -170,15 +181,13 @@ const Navbar = () => {
                             <div className="flex flex-col gap-4 text-lg font-semibold text-zinc-800">
                                 <NavLink to="/" onClick={() => setMobileMenuOpen(false)} className={navLinkClass} end>Home</NavLink>
                                 <NavLink to="/restaurants" onClick={() => setMobileMenuOpen(false)} className={navLinkClass}>Restaurants</NavLink>
-                                {/* --- NEW LINK ADDED TO MOBILE MENU --- */}
                                 <NavLink to="/ai-chef" onClick={() => setMobileMenuOpen(false)} className={navLinkClass}>AI Chef</NavLink>
-                                {user && <NavLink to="/orders" onClick={() => setMobileMenuOpen(false)} className={navLinkClass}>My Tiffins</NavLink>}
                             </div>
-                            <div className="mt-auto pt-6 border-t">
+                            <div className="mt-auto pt-6 border-t border-zinc-200">
                                 {user ? (
                                     <div className="space-y-4">
                                         <div className="flex items-center gap-3">
-                                            <div className="w-12 h-12 bg-orange-100 rounded-full flex items-center justify-center text-orange-600 font-bold text-xl">
+                                            <div className="w-12 h-12 bg-orange-500 rounded-full flex items-center justify-center text-white font-bold text-xl shadow-md">
                                                 {user.name.charAt(0).toUpperCase()}
                                             </div>
                                             <div>
@@ -186,8 +195,8 @@ const Navbar = () => {
                                                 <p className="text-sm text-zinc-500">{user.email}</p>
                                             </div>
                                         </div>
-                                        <button onClick={handleLogout} className={`${dropdownItemClass} text-red-600 bg-red-50`}>
-                                            <LogOut size={16} /> Logout
+                                        <button onClick={handleLogout} className="w-full flex items-center justify-center gap-2 px-5 py-3 bg-red-500 text-white rounded-full font-semibold hover:bg-red-600 transition-colors">
+                                            <LogOut size={18} /> Logout
                                         </button>
                                     </div>
                                 ) : (
