@@ -1,34 +1,13 @@
-// FILE: src/services/orderService.js
-// This service handles all API calls related to orders.
+import axios from "axios";
 
-import axios from 'axios';
+// Use the production URL from environment variables,
+// but fall back to the relative path for local development.
+const API_URL = import.meta.env.VITE_API_BASE_URL || "/api";
 
-// ---
-// CHANGE FOR RENDER DEPLOYMENT:
-// Use an environment variable for the API URL.
-// In Render, you would set 'VITE_API_BASE_URL' in your environment variables.
-// For local development, you might have a .env.local file with a different URL.
-const API_URL = import.meta.env.VITE_API_BASE_URL || '/api/orders';
-
-// Creates a new order
-export const createOrder = async (orderData, token) => {
-    const config = {
-        headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${token}`,
-        },
-    };
-    const { data } = await axios.post(API_URL, orderData, config);
-    return data;
+export const registerUser = (userData) => {
+    return axios.post(`${API_URL}/users/register`, userData);
 };
 
-// Fetches the details of a specific order by its ID
-export const getOrderDetails = async (id, token) => {
-    const config = {
-        headers: {
-            Authorization: `Bearer ${token}`,
-        },
-    };
-    const { data } = await axios.get(`${API_URL}/${id}`, config);
-    return data;
+export const loginUser = (credentials) => {
+    return axios.post(`${API_URL}/users/login`, credentials);
 };
