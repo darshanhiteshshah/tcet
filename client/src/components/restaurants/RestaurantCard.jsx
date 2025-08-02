@@ -22,9 +22,9 @@ const RestaurantCard = ({ restaurant }) => {
                     <StarRating rating={restaurant.rating} />
                 </div>
 
-                {/* Cuisine Info */}
-                <p className="text-sm text-zinc-600 mt-1">
-                    North Indian, Chaat, Desserts
+                {/* Cuisine Info - Now dynamic */}
+                <p className="text-sm text-zinc-600 mt-1 line-clamp-2">
+                    {restaurant.description}
                 </p>
             </div>
         </div>
