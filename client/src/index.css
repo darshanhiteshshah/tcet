@@ -44,3 +44,15 @@ body {
     transform: scale(1);
   }
 }
+
+/* === WATERY HOVER EFFECT === */
+
+.hero-image {
+  /* The transition makes the effect smoothly appear and disappear */
+  transition: filter 0.5s ease-in-out;
+}
+
+.hero-container:hover .hero-image {
+  /* Apply the SVG filter on hover */
+  filter: url(#watery-distortion);
+}
