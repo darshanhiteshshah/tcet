@@ -10,6 +10,9 @@ import RegisterPage from './pages/RegisterPage';
 import CartPage from './pages/CartPage';
 import OrderStatusPage from './pages/OrderStatusPage';
 
+// 1. Import your new page component
+import AIChefPage from './pages/AIChefPage';
+
 function App() {
   return (
     <Router>
@@ -23,6 +26,10 @@ function App() {
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/cart" element={<CartPage />} />
           <Route path="/order/:id" element={<OrderStatusPage />} />
+
+          {/* 2. Add the new route for the AI Chef page */}
+          <Route path="/ai-chef" element={<AIChefPage />} />
+
         </Routes>
       </main>
       <Footer />

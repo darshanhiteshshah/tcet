@@ -2,16 +2,20 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { Facebook, Twitter, Instagram, Linkedin, Send } from 'lucide-react';
 
-// Re-usable Logo component (can be shared with Navbar)
+// --- UPDATED: Logo component to match the Navbar's branding ---
 const Logo = () => (
-    <Link to="/" className="flex items-center gap-2">
-        <div className="w-9 h-9 bg-orange-500 rounded-lg flex items-center justify-center shadow-md">
-            <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
+    <Link to="/" className="flex items-center gap-3">
+        {/* Tiffin-style SVG Icon */}
+        <div className="w-10 h-10 bg-orange-500 rounded-lg flex items-center justify-center shadow-md p-1.5">
+            <svg className="text-white" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M18 8.5H6C4.89543 8.5 4 9.39543 4 10.5V18.5C4 19.6046 4.89543 20.5 6 20.5H18C19.1046 20.5 20 19.6046 20 18.5V10.5C20 9.39543 19.1046 8.5 18 8.5Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                <path d="M7 8.5V6.5C7 4.84315 8.34315 3.5 10 3.5H14C15.6569 3.5 17 4.84315 17 6.5V8.5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                <path d="M4 14.5H20" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
             </svg>
         </div>
+        {/* Text color is now white to be visible on the dark footer background */}
         <span className="text-2xl font-extrabold text-white tracking-tight">
-            Feast
+            Where's My Tiffin
         </span>
     </Link>
 );
@@ -57,7 +61,8 @@ const Footer = () => {
 
                 {/* --- Bottom Bar: Copyright & Legal --- */}
                 <div className="mt-16 pt-8 border-t border-zinc-800 flex flex-col sm:flex-row justify-between items-center text-center sm:text-left">
-                    <p className="text-zinc-500 text-sm">&copy; {new Date().getFullYear()} Feast Delivery. All Rights Reserved.</p>
+                    {/* --- UPDATED: Copyright text --- */}
+                    <p className="text-zinc-500 text-sm">&copy; {new Date().getFullYear()} Where's My Tiffin. All Rights Reserved.</p>
                     <div className="flex items-center gap-6 mt-4 sm:mt-0 text-sm">
                         <Link to="/terms" className={footerLinkClass}>Terms</Link>
                         <Link to="/privacy" className={footerLinkClass}>Privacy</Link>
