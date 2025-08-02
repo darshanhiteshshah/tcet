@@ -6,7 +6,6 @@ import RestaurantCard from '../components/restaurants/RestaurantCard';
 import NoResultsFound from '../components/restaurants/NoResultsFound';
 import { Search, ChevronDown } from 'lucide-react';
 
-// --- Clean, spacious FilterButton component ---
 const FilterButton = ({ label, activeFilter, setFilter }) => (
     <button
         onClick={() => setFilter(label)}
@@ -72,15 +71,17 @@ const RestaurantsPage = () => {
     };
 
     return (
-        <div className="bg-slate-50 min-h-screen">
-            <div className="max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+        // --- FIX: Added padding-top here to push content below the navbar ---
+        <div className="bg-slate-50 min-h-screen pt-24 md:pt-28"> 
+            {/* Adjusted the inner padding to `pt-8` and `pb-16` */}
+            <div className="max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 pb-16">
                 
                 {/* --- Page Header --- */}
                 <header className="text-center mb-12">
                     <h1 className="text-4xl sm:text-5xl font-bold text-zinc-900 tracking-tight">
                         <span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-500 to-red-500">
                             Restaurants
-                        </span> in Navi Mumbai
+                        </span> in Mumbai
                     </h1>
                     <p className="mt-4 text-lg text-zinc-600 max-w-2xl mx-auto">
                         Discover delicious meals from the best local spots, delivered right to your door.
