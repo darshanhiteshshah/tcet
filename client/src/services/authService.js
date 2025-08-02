@@ -1,60 +1,11 @@
-// FILE: client/src/services/authService.js
-// This service handles all API calls related to user authentication.
+import axios from "axios";
 
-import axios from 'axios';
+const API_URL = "/api/users"; // Use relative path for proxy
 
-// ---
-// CHANGE FOR RENDER DEPLOYMENT:
-// Use an environment variable for the API base URL and correctly append the path.
-// The backend uses a '/api' prefix, so we must include it here.
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || '';
-const API_URL = `${API_BASE_URL}/api/users`;
-
-// Register user
-export const registerUser = async (userData) => {
-    try {
-        const response = await axios.post(`${API_URL}/register`, userData);
-        if (response.data.token) {
-            localStorage.setItem('user', JSON.stringify(response.data));
-        }
-        return response.data;
-    } catch (error) {
-        console.error("Error during user registration:", error.response?.data?.message || error.message);
-        throw error;
-    }
+export const registerUser = (userData) => {
+    return axios.post(`${API_URL}/register`, userData);
 };
 
-// Login user
-export const loginUser = async (userData) => {
-    try {
-        const response = await axios.post(`${API_URL}/login`, userData);
-        if (response.data.token) {
-            localStorage.setItem('user', JSON.stringify(response.data));
-        }
-        return response.data;
-    } catch (error) {
-        console.error("Error during user login:", error.response?.data?.message || error.message);
-        throw error;
-    }
-};
-
-// Logout user
-export const logout = () => {
-    localStorage.removeItem('user');
-};
-
-// Get current user from local storage
-export const getCurrentUser = () => {
-    // Correctly handle cases where the 'user' item does not exist or is not valid JSON.
-    const user = localStorage.getItem('user');
-    if (user && user !== 'undefined') {
-        try {
-            return JSON.parse(user);
-        } catch (e) {
-            console.error("Failed to parse user info from localStorage", e);
-            localStorage.removeItem('user'); // Clear corrupted data
-            return null;
-        }
-    }
-    return null;
+export const loginUser = (credentials) => {
+    return axios.post(`${API_URL}/login`, credentials);
 };
